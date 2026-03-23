@@ -3,6 +3,33 @@
 将领星 ERP 开放 API 封装为 MCP Server，部署到 Amazon Bedrock AgentCore，通过 Amazon Q Business (Quick Suite) 的 Chat / Flows 调用。
 
 > 🚀 **推荐：使用 [Kiro](https://kiro.dev) 快速自动配置**  — 在 Kiro 中打开本项目，将下方提示词粘贴到 Chat 中，Kiro 会自动完成 AWS 资源创建、配置文件填写和部署。详见 [Kiro 自动部署指南](#kiro-自动部署)。
+>
+> 🔌 **想接入其他数据 API？** — 本项目可作为模板，快速将任意业务 API 封装为 MCP Server。只需一句提示词，Kiro 会引导你完成。详见 [接入新的数据 API](#接入新的数据-api)。
+
+## 接入新的数据 API
+
+本项目不仅适用于领星 ERP，你可以用同样的架构将任何业务 API 封装为 MCP Server 并部署到 AgentCore。
+
+在 Kiro 中打开本项目，粘贴以下提示词即可开始：
+
+```
+我想基于这个项目的架构，接入一个新的数据 API 并封装为 MCP Server 部署到 AgentCore。
+
+请先问我以下信息：
+1. API 接口文档的 URL 或文件路径（你需要阅读理解接口文档）
+2. 我希望封装哪些接口、实现哪些功能（比如数据查询、报表生成等）
+
+然后参考本项目中 #mcp-server/lingxing_client.py 和 #mcp-server/mcp_server.py 的代码结构，
+以及 #doc/kiro-agentcore-mcp-playbook.md 的部署流程，帮我：
+- 创建新的 API 客户端（类似 lingxing_client.py）
+- 在 mcp_server.py 中新增对应的 MCP 工具
+- 如果需要 Excel 报告生成，也一并实现
+- 更新 requirements.txt（如果有新依赖）
+```
+
+Kiro 会依次询问你的接口文档和需求范围，然后自动生成代码。
+
+---
 
 ## 架构
 
