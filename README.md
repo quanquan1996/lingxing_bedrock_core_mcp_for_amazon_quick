@@ -2,9 +2,9 @@
 
 将领星 ERP 开放 API 封装为 MCP Server，部署到 Amazon Bedrock AgentCore，通过 Amazon Q Business (Quick Suite) 的 Chat / Flows 调用。
 
-> 🚀 **推荐：使用 [Kiro](https://kiro.dev) 快速自动配置**  — 在 Kiro 中打开本项目，将下方提示词粘贴到 Chat 中，Kiro 会自动完成 AWS 资源创建、配置文件填写和部署。详见 [Kiro 自动部署指南](#kiro-自动部署)。
+> 🔌 **接入任意数据 API：使用 [Kiro](https://kiro.dev) 一句提示词自动完成** — 本项目可作为模板，将任何业务 API 封装为 MCP Server 部署到 AgentCore。在 Kiro 中打开项目，粘贴提示词，Kiro 会自动问你接口文档和需求，然后生成代码。详见 [接入新的数据 API](#接入新的数据-api)。
 >
-> 🔌 **想接入其他数据 API？** — 本项目可作为模板，快速将任意业务 API 封装为 MCP Server。只需一句提示词，Kiro 会引导你完成。详见 [接入新的数据 API](#接入新的数据-api)。
+> 🚀 **部署也用 Kiro** — 粘贴提示词，Kiro 自动完成 AWS 资源创建、配置文件填写和部署，全程无需手动操作。详见 [Kiro 自动部署指南](#kiro-自动部署)。
 
 ## 接入新的数据 API
 
