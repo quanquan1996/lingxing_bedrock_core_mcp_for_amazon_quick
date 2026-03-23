@@ -117,33 +117,28 @@ python test_invoke.py
 ### 提示词 1：初始化 AWS 资源 + 配置
 
 ```
-我 clone 了这个领星 ERP MCP Server 项目，需要部署到我自己的 AWS 账号。请帮我完成以下工作：
+我 clone 了这个领星 ERP MCP Server 项目，需要部署到我自己的 AWS 账号。请参考 #doc/kiro-agentcore-mcp-playbook.md 和 #doc/deployment-guide.md 帮我完成以下工作：
 
-1. 先从 example 模板复制出所有配置文件（.bedrock_agentcore.yaml、test_invoke.py、deployment-info.md、s3-policy.json、s3-role-policy.json）
-2. 执行 `aws sts get-caller-identity` 获取我的账号 ID 和 Region
-3. 查找现有的 AgentCore Runtime Role（`aws iam list-roles --query "Roles[?contains(RoleName, 'AgentCore')]"`），如果没有就告诉我先去 AgentCore 控制台创建一个 Agent
-4. 创建 Cognito User Pool（如果还没有的话）、配置 Domain、创建 Resource Server（identifier: lingxing-mcp, scope: invoke）、创建 App Client（Client Credentials Grant）
-5. 创建 S3 报告桶 `lingxing-reports-<ACCOUNT_ID>` 和 CodeBuild 桶 `bedrock-agentcore-codebuild-<ACCOUNT_ID>`
-6. 给 AgentCore Role 添加 S3 读写权限（用 mcp-server/s3-policy.json）
-7. 把所有实际值填入 .bedrock_agentcore.yaml、test_invoke.py、deployment-info.md
+1. 从 example 模板复制出所有配置文件
+2. 自动获取我的 AWS 账号信息（账号 ID、Region）
+3. 查找或创建 AgentCore Runtime Role
+4. 创建 Cognito 资源（User Pool、Domain、Resource Server、App Client）
+5. 创建 S3 存储桶并配置权限
+6. 把所有实际值自动填入配置文件
 
-参考项目中的 doc/kiro-agentcore-mcp-playbook.md 和 doc/deployment-guide.md 了解完整流程。
+如果缺少任何信息请直接问我。
 ```
 
-### 提示词 2：部署 MCP Server
+### 提示词 2：部署 + 验证
 
 ```
-AWS 资源已经配置好了，现在帮我部署 MCP Server 到 AgentCore。
-
-我的领星 AppId 是 <YOUR_APP_ID>，AppSecret 是 <YOUR_APP_SECRET>。
-
-请在 mcp-server/ 目录下执行 agentcore deploy，传入环境变量 LINGXING_APP_ID、LINGXING_APP_SECRET、LINGXING_S3_BUCKET、LINGXING_S3_PREFIX。部署完成后用 test_invoke.py 验证 MCP 端点是否正常工作。
+AWS 资源已经配置好了，帮我把 MCP Server 部署到 AgentCore 并验证。需要用到领星的 AppId 和 AppSecret 作为环境变量，部署完成后运行 test_invoke.py 测试端点。如果缺少信息请问我。
 ```
 
 ### 提示词 3：Quick Suite 配置（可选）
 
 ```
-MCP Server 已经部署成功，帮我整理 Quick Suite 的配置信息：MCP 端点 URL、Cognito OAuth 的 Client ID / Secret / Token URL / Scope，我需要在 Quick Suite > Integrations > Actions 中填入这些值。
+MCP Server 已部署成功，帮我整理在 Quick Suite 中配置 MCP Action 所需的全部信息（端点 URL、OAuth 认证参数），从现有配置文件中提取即可。
 ```
 
 ## License
