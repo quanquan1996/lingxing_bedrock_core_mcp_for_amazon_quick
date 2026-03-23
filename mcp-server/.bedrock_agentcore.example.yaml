@@ -1,0 +1,45 @@
+default_agent: lingxing_erp_mcp
+agents:
+  lingxing_erp_mcp:
+    name: lingxing_erp_mcp
+    language: python
+    node_version: null
+    entrypoint: mcp_server.py
+    deployment_type: direct_code_deploy
+    runtime_type: PYTHON_3_11
+    platform: linux/arm64
+    container_runtime: null
+    source_path: .
+    aws:
+      execution_role: arn:aws:iam::<ACCOUNT_ID>:role/service-role/<AGENTCORE_ROLE_NAME>
+      execution_role_auto_create: false
+      account: "<ACCOUNT_ID>"
+      region: <REGION>
+      ecr_repository: null
+      ecr_auto_create: false
+      s3_path: s3://bedrock-agentcore-codebuild-<ACCOUNT_ID>
+      s3_auto_create: false
+      network_configuration:
+        # Use PUBLIC if no VPC needed, or VPC with your security groups/subnets
+        network_mode: PUBLIC
+        # Uncomment below for VPC mode:
+        # network_mode: VPC
+        # network_mode_config:
+        #   security_groups:
+        #   - sg-xxxxxxxxxxxxxxxxx
+        #   subnets:
+        #   - subnet-xxxxxxxxxxxxxxxxx
+      protocol_configuration:
+        server_protocol: MCP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: null
+        max_lifetime: null
+    memory:
+      mode: NO_MEMORY
+    authorizer_configuration:
+      customJWTAuthorizer:
+        discoveryUrl: https://cognito-idp.<REGION>.amazonaws.com/<USER_POOL_ID>/.well-known/openid-configuration
+        allowedClients:
+          - <COGNITO_CLIENT_ID>

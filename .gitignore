@@ -1,0 +1,30 @@
+# IDE / Kiro
+.kiro/
+
+# AgentCore build artifacts
+mcp-server/.bedrock_agentcore/
+
+# Sensitive deployment files (use .example versions)
+doc/deployment-info.md
+mcp-server/.bedrock_agentcore.yaml
+mcp-server/test_invoke.py
+mcp-server/s3-policy.json
+mcp-server/s3-role-policy.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Excel temp files
+*.xlsx
