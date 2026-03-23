@@ -2,6 +2,8 @@
 
 将领星 ERP 开放 API 封装为 MCP Server，部署到 Amazon Bedrock AgentCore，通过 Amazon Q Business (Quick Suite) 的 Chat / Flows 调用。
 
+> 🚀 **推荐：使用 [Kiro](https://kiro.dev) 快速自动配置**  — 在 Kiro 中打开本项目，将下方提示词粘贴到 Chat 中，Kiro 会自动完成 AWS 资源创建、配置文件填写和部署。详见 [Kiro 自动部署指南](#kiro-自动部署)。
+
 ## 架构
 
 ```
@@ -107,6 +109,42 @@ python test_invoke.py
 - 利润报表按天查询最长跨度 31 天
 - Review 接口令牌桶容量仅 1，注意控制频率
 - 更多踩坑记录见 [实战手册](doc/kiro-agentcore-mcp-playbook.md#四踩坑记录)
+
+## Kiro 自动部署
+
+如果你使用 [Kiro](https://kiro.dev) 作为 IDE，可以跳过手动配置，直接把以下提示词粘贴到 Kiro Chat 中，Kiro 会自动完成所有 AWS 资源创建和部署工作。
+
+### 提示词 1：初始化 AWS 资源 + 配置
+
+```
+我 clone 了这个领星 ERP MCP Server 项目，需要部署到我自己的 AWS 账号。请帮我完成以下工作：
+
+1. 先从 example 模板复制出所有配置文件（.bedrock_agentcore.yaml、test_invoke.py、deployment-info.md、s3-policy.json、s3-role-policy.json）
+2. 执行 `aws sts get-caller-identity` 获取我的账号 ID 和 Region
+3. 查找现有的 AgentCore Runtime Role（`aws iam list-roles --query "Roles[?contains(RoleName, 'AgentCore')]"`），如果没有就告诉我先去 AgentCore 控制台创建一个 Agent
+4. 创建 Cognito User Pool（如果还没有的话）、配置 Domain、创建 Resource Server（identifier: lingxing-mcp, scope: invoke）、创建 App Client（Client Credentials Grant）
+5. 创建 S3 报告桶 `lingxing-reports-<ACCOUNT_ID>` 和 CodeBuild 桶 `bedrock-agentcore-codebuild-<ACCOUNT_ID>`
+6. 给 AgentCore Role 添加 S3 读写权限（用 mcp-server/s3-policy.json）
+7. 把所有实际值填入 .bedrock_agentcore.yaml、test_invoke.py、deployment-info.md
+
+参考项目中的 doc/kiro-agentcore-mcp-playbook.md 和 doc/deployment-guide.md 了解完整流程。
+```
+
+### 提示词 2：部署 MCP Server
+
+```
+AWS 资源已经配置好了，现在帮我部署 MCP Server 到 AgentCore。
+
+我的领星 AppId 是 <YOUR_APP_ID>，AppSecret 是 <YOUR_APP_SECRET>。
+
+请在 mcp-server/ 目录下执行 agentcore deploy，传入环境变量 LINGXING_APP_ID、LINGXING_APP_SECRET、LINGXING_S3_BUCKET、LINGXING_S3_PREFIX。部署完成后用 test_invoke.py 验证 MCP 端点是否正常工作。
+```
+
+### 提示词 3：Quick Suite 配置（可选）
+
+```
+MCP Server 已经部署成功，帮我整理 Quick Suite 的配置信息：MCP 端点 URL、Cognito OAuth 的 Client ID / Secret / Token URL / Scope，我需要在 Quick Suite > Integrations > Actions 中填入这些值。
+```
 
 ## License
 
