@@ -140,12 +140,12 @@ curl --location 'https://openapi.lingxing.com/api/auth-server/oauth/access-token
 |----------|------|------|------|
 | 利润报表-MSKU | /bd/profit/report/open/report/msku/list | POST | 按 MSKU 维度查询利润 |
 | 利润报表-ASIN | /bd/profit/report/open/report/asin/list | POST | 按 ASIN 维度查询利润 |
-| 利润报表-父ASIN | /bd/profit/report/open/report/parent/list | POST | 按父 ASIN 维度查询利润 |
+| 利润报表-父ASIN | /bd/profit/report/open/report/parent/asin/list | POST | 按父 ASIN 维度查询利润 |
 | 利润报表-SKU | /bd/profit/report/open/report/sku/list | POST | 按 SKU 维度查询利润 |
 | 利润报表-店铺 | /bd/profit/report/open/report/seller/list | POST | 按店铺维度查询利润 |
-| 利润报表-店铺月度汇总 | /bd/profit/report/open/report/seller/summary | POST | 店铺月度汇总 |
-| 利润报表-订单 | /bd/profit/report/open/report/order/list | POST | 按订单维度查询利润 |
-| 利润报表-订单transaction | /bd/profit/report/open/report/order/transaction/list | POST | 订单transaction视图 |
+| 利润报表-店铺月度汇总 | /bd/profit/report/open/report/seller/summary/list | POST | 店铺月度汇总 |
+| 利润报表-订单 | /bd/profit/report/open/report/order/list | POST | 按订单维度查询利润（即将下线） |
+| 利润报表-订单transaction | /bd/profit/report/open/report/order/transaction/list | POST | 订单transaction视图（推荐替代） |
 | 利润统计-MSKU | (统计模块) | POST | 利润统计 MSKU 维度 |
 | 利润统计-ASIN | (统计模块) | POST | 利润统计 ASIN 维度 |
 | 利润统计-父ASIN | (统计模块) | POST | 利润统计父 ASIN 维度 |

@@ -122,10 +122,16 @@ class LingxingClient:
             "timestamp": timestamp,
         }
 
-        # 签名需要包含业务参数
+        # 签名需要包含业务参数（跳过 list/dict 复杂类型，boolean 转小写）
         sign_params = {**query_params}
         if body:
-            sign_params.update({k: v for k, v in body.items() if v is not None})
+            for k, v in body.items():
+                if v is None or isinstance(v, (list, dict)):
+                    continue
+                if isinstance(v, bool):
+                    sign_params[k] = str(v).lower()  # True -> "true", False -> "false"
+                else:
+                    sign_params[k] = v
 
         query_params["sign"] = self._generate_sign(sign_params)
 
@@ -199,15 +205,83 @@ class LingxingClient:
         sids: list[int] | None = None,
         currency: str = "CNY",
     ) -> dict:
-        """查询利润报表-店铺月度汇总"""
+        """查询利润报表-店铺月度汇总（通过 seller/list + monthlyQuery=true 实现）"""
         body = {
+            "offset": 0,
+            "length": 10000,
+            "monthlyQuery": True,
             "startDate": start_date,
             "endDate": end_date,
             "currencyCode": currency,
         }
         if sids:
             body["sids"] = sids
-        return self._request("POST", "/bd/profit/report/open/report/seller/summary", body)
+        return self._request("POST", "/bd/profit/report/open/report/seller/list", body)
+
+    def get_profit_by_parent_asin(
+        self,
+        start_date: str,
+        end_date: str,
+        sids: list[int] | None = None,
+        monthly: bool = False,
+        offset: int = 0,
+        length: int = 1000,
+        currency: str = "CNY",
+    ) -> dict:
+        """查询利润报表-父ASIN 维度"""
+        body = {
+            "offset": offset,
+            "length": length,
+            "monthlyQuery": monthly,
+            "startDate": start_date,
+            "endDate": end_date,
+            "currencyCode": currency,
+        }
+        if sids:
+            body["sids"] = sids
+        return self._request("POST", "/bd/profit/report/open/report/parent/asin/list", body)
+
+    def get_profit_by_order(
+        self,
+        start_date: str,
+        end_date: str,
+        search_date_field: str = "posted_date_locale",
+        sids: list[int] | None = None,
+        offset: int = 0,
+        length: int = 1000,
+        currency: str = "CNY",
+    ) -> dict:
+        """查询利润报表-订单维度（即将下线，建议用 transaction 视图）"""
+        body = {
+            "offset": offset,
+            "length": length,
+            "search_date_field": search_date_field,
+            "start_date": start_date,
+            "end_date": end_date,
+            "currency_code": currency,
+        }
+        if sids:
+            body["sids"] = sids
+        return self._request("POST", "/bd/profit/report/open/report/order/list", body)
+
+    def get_profit_seller_summary_v2(
+        self,
+        start_date: str,
+        end_date: str,
+        sids: list[int] | None = None,
+        monthly: bool = False,
+        currency: str = "CNY",
+    ) -> dict:
+        """查询利润报表-店铺月度汇总（独立接口，日期格式 yyyy-MM-dd）"""
+        body = {
+            "monthlyQuery": monthly,
+            "startDate": start_date,
+            "endDate": end_date,
+            "currencyCode": currency,
+        }
+        if sids:
+            body["sids"] = sids
+        return self._request("POST", "/bd/profit/report/open/report/seller/summary/list", body)
 
     def get_reviews(
         self,
@@ -237,3 +311,4 @@ class LingxingClient:
         return self._request(
             "POST", "/basicOpen/openapi/service/v3/data/mws/reviews", body
         )
+

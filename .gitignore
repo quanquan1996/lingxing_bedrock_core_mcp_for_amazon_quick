@@ -10,6 +10,9 @@ mcp-server/.bedrock_agentcore.yaml
 mcp-server/test_invoke.py
 mcp-server/s3-policy.json
 mcp-server/s3-role-policy.json
+mcp-server/test_quick.py
+mcp-server/test_raw.py
+mcp-server/test_agentcore_tools.py
 
 # Python
 __pycache__/
@@ -28,3 +31,9 @@ Thumbs.db
 
 # Excel temp files
 *.xlsx
+
+# Test result JSON files (contain API responses with real data)
+*.json
+!mcp-server/vpc-policy.json
+!mcp-server/s3-policy.example.json
+!mcp-server/s3-role-policy.example.json
